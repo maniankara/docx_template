@@ -20,6 +20,7 @@ template = DocxTemplate::Docx.new "/opt/docx_template.docx"
 template.replace_text("##SINGLE_REPLACE_TEXT##", "ACTUAL TEXT HERE")
 template.replace_text("##MULTI_REPLACE_TEXT##", "ACTUAL TEXT HERE", true)
 template.replace_image("image1.jpeg", "/opt/image5.jpg")
+template.replace_header("##HEADER_REPLACE_TEXT##", "ACTUAL TEXT HERE", true)
 template.save('/opt/final.docx')
 ```
 ###### Line by line explanation is given here:
@@ -41,6 +42,10 @@ template.replace_image("image1.jpeg", "/opt/image5.jpg")
 ```
 The first param defines the name of the image to be replaced. Can be checked by opening the template as archive
 ```
+template.replace_header("##HEADER_REPLACE_TEXT##", "ACTUAL TEXT HERE", true)
+```
+This does the same as before but in document headers
+```
 template.save('/opt/final.docx')
 ```
 The actual file processing begins and ends here
@@ -58,6 +63,7 @@ The following test setup was used when released:
 * ruby2.1.2
 * rails4
 * Ubuntu14.1 Linux
+* Microsoft word 2007+
 
 ### License
 docx_template has been published under https://github.com/maniankara/docx_template/blob/master/LICENSE under Maniankara Inc.

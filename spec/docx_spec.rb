@@ -26,4 +26,11 @@ RSpec.describe DocxTemplate::Docx do
     template.save("/tmp/a.docx")
     expect(@docx_verifier.verify_image_exists?("/tmp/a.docx", "image1.jpeg", "spec/unit/images/image5.jpg")).to be(true)
   end
+
+  it "Replaces text in header" do
+    template = DocxTemplate::Docx.new "spec/unit/templates/docx_template.docx"
+    template.replace_header("##HEADER_REPLACE_TEXT##", "here")
+    template.save("/tmp/a.docx")
+    expect(@docx_verifier.verify_text_exists?("/tmp/a.docx", "##HEADER_REPLACE_TEXT##")).to be(false)
+  end
 end

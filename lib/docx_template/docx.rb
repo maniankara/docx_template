@@ -3,11 +3,17 @@ require 'zip'
 module DocxTemplate
 
   class DocxTemplate::Docx
-    attr_reader :dest_path, :file_path, :text_replacer_list, :image_replacer_list
+    attr_reader :dest_path, 
+      :file_path,
+      :text_replacer_list,
+      :image_replacer_list,
+      :header_replacer_list
+    
     def initialize(file_path)
       @file_path = file_path
       @text_replacer_list = []
       @image_replacer_list = []
+      @header_replacer_list = []
     end
 
     def replace_text(src_text, dest_text, multiple_occurances=false)
@@ -20,6 +26,10 @@ module DocxTemplate
       @image_replacer_list << replacer
     end
 
+    def replace_header(src_text, dest_text, multiple_occurances=false)
+      @header_replacer_list << EntityReplacer.new(src_text, dest_text, multiple_occurances)
+    end
+
     def save(dest_path=Dir.mktmpdir)
       @dest_path = dest_path
       buffer = nil
@@ -29,14 +39,16 @@ module DocxTemplate
           prepare_rest_of_archive(zip_file, out, exclusion_files_list)
           # text part
           unless @text_replacer_list.empty?
-            out.put_next_entry(DOCUMENT_FILE_PATH)
-            replacer = @text_replacer_list.first
-            out.write zip_file.read(DOCUMENT_FILE_PATH).gsub(replacer.src_entity,replacer.dest_entity)
+            replace_content(out, DOCUMENT_FILE_PATH, zip_file, @text_replacer_list)
           end
           # image part
           @image_replacer_list.each do |replacer|
             out.put_next_entry("#{IMAGES_DIR_PATH}/#{replacer.src_entity}")
             out.write File.read(replacer.dest_entity)
+          end
+          # header part
+          unless @header_replacer_list.empty?
+            replace_content(out, HEADER_FILE_PATH, zip_file, @header_replacer_list)
           end
         end
       end
@@ -48,7 +60,7 @@ module DocxTemplate
 
     DOCUMENT_FILE_PATH = "word/document.xml"
     IMAGES_DIR_PATH = "word/media"
-    RELS_FILE_PATH = "word"
+    HEADER_FILE_PATH = "word/header1.xml"
 
     def prepare_rest_of_archive(zip_file, out, exclude_list)
       zip_file.entries.each do |e|
@@ -70,6 +82,14 @@ module DocxTemplate
       e_list
     end
 
+    def replace_content(out, dest_file, zip_file, list)
+      out.put_next_entry(dest_file)
+      string_buffer = zip_file.read(dest_file)
+      list.each do |replacer|
+        string_buffer.gsub!(replacer.src_entity,replacer.dest_entity)
+      end
+      out.write string_buffer
+    end
 
     class EntityReplacer
       attr_reader :src_entity, :dest_entity, :occurances

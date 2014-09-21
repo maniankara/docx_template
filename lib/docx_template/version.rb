@@ -1,3 +1,3 @@
 module DocxTemplate
-  VERISON = "0.1"
+  VERISON = "0.2"
 end

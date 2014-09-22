@@ -5,7 +5,7 @@ require 'docx_template/version'
 
 Gem::Specification.new do |spec|
   spec.name          = "docx_template"
-  spec.version       = "0.2"
+  spec.version       = "0.3"
   spec.authors       = ["Maniankara"]
   spec.email         = ["Maniankara@gmail.com"]
   spec.summary       = %q{Docx templating library which could replace docx contents such as text, images etc. in one go.}
@@ -13,6 +13,7 @@ Gem::Specification.new do |spec|
     template = DocxTemplate::Docx.new "/opt/docx_template.docx"
     template.replace_text("##SINGLE_REPLACE_TEXT##", "ACTUAL TEXT HERE")
     template.replace_text("##MULTI_REPLACE_TEXT##", "ACTUAL TEXT HERE", true)
+    template.replace_header("##HEADER_REPLACE_TEXT##", "ACTUAL TEXT HERE", true)
     template.replace_image("image1.jpeg", "/opt/image5.jpg")
     template.save('/opt/final.docx')
   }

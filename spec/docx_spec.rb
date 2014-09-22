@@ -35,12 +35,18 @@ RSpec.describe DocxTemplate::Docx do
   end
 
   # Negative cases
-  it "Handling nil substitutions" do
+  it "Handling nil substitutions for replace_text" do
     template = DocxTemplate::Docx.new "spec/unit/templates/docx_template.docx"
     template.replace_text("##MULTIPLE_REPLACE_TEXT##", nil)
     template.save("/tmp/a.docx")
     expect(@docx_verifier.verify_text_exists?("/tmp/a.docx", "##MULTIPLE_REPLACE_TEXT##")).to be(false)
   end
 
+  it "Handling non existing file for replace_image" do
+    template = DocxTemplate::Docx.new "spec/unit/templates/docx_template.docx"
+    template.replace_image("image1.jpeg", "a/non/existing/image.jpg")
+    template.save("/tmp/a.docx")
+    expect(@docx_verifier.verify_image_exists?("/tmp/a.docx", "image1.jpeg", "spec/unit/images/image5.jpg")).to be(false)
+  end
   
 end

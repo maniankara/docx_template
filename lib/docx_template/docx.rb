@@ -43,6 +43,7 @@ module DocxTemplate
           end
           # image part
           @image_replacer_list.each do |replacer|
+            next unless File.exist?(replacer.dest_entity) # silently skip non-existent files
             out.put_next_entry("#{IMAGES_DIR_PATH}/#{replacer.src_entity}")
             out.write File.read(replacer.dest_entity)
           end

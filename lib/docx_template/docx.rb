@@ -96,7 +96,7 @@ module DocxTemplate
       attr_writer :type
       def initialize(src, dest, occurances)
         @src_entity = src
-        @dest_entity = dest
+        @dest_entity = ( dest ? dest : "" )
         @occurances = occurances
       end
 

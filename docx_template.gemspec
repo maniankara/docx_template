@@ -5,7 +5,7 @@ require 'docx_template/version'
 
 Gem::Specification.new do |spec|
   spec.name          = "docx_template"
-  spec.version       = "0.4"
+  spec.version       = "0.5"
   spec.authors       = ["Maniankara"]
   spec.email         = ["Maniankara@gmail.com"]
   spec.summary       = %q{Docx templating library which could replace docx contents such as text, images etc. in one go.}

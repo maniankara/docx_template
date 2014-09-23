@@ -22,7 +22,6 @@ module DocxTemplate
 
     def replace_image(src_image_file_name, dest_image_file)
       replacer = EntityReplacer.new(src_image_file_name, dest_image_file, false)
-      replacer.type = "IMAGE"
       @image_replacer_list << replacer
     end
 
@@ -78,7 +77,7 @@ module DocxTemplate
         e_list << DOCUMENT_FILE_PATH
       end
       @image_replacer_list.each do |replacer|
-        e_list << "#{IMAGES_DIR_PATH}/#{replacer.src_entity}"
+        e_list << "#{IMAGES_DIR_PATH}/#{replacer.src_entity}" if File.exist?(replacer.dest_entity)
       end
       e_list
     end

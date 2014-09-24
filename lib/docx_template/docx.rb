@@ -1,4 +1,5 @@
 require 'zip'
+Zip.unicode_names = true
 
 module DocxTemplate
 
@@ -82,11 +83,12 @@ module DocxTemplate
       e_list
     end
 
+    # Encoding should be handled by the user, check spec for examples
     def replace_content(out, dest_file, zip_file, list)
       out.put_next_entry(dest_file)
       string_buffer = zip_file.read(dest_file)
       list.each do |replacer|
-        string_buffer.gsub!(replacer.src_entity,replacer.dest_entity)
+        string_buffer.gsub!(replacer.src_entity, replacer.dest_entity)
       end
       out.write string_buffer
     end

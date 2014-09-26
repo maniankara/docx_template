@@ -93,6 +93,7 @@ module DocxTemplate
           string_buffer.gsub!(replacer.src_entity, replacer.dest_entity)
         rescue Exception => e
           puts "Exception: #{e}"
+          puts "Exception: replacing from: #{replacer.src_entity} to: #{replacer.dest_entity}"
         end
         
       end

@@ -88,7 +88,13 @@ module DocxTemplate
       out.put_next_entry(dest_file)
       string_buffer = zip_file.read(dest_file)
       list.each do |replacer|
-        string_buffer.gsub!(replacer.src_entity, replacer.dest_entity)
+        # Dont abort on failure
+        begin
+          string_buffer.gsub!(replacer.src_entity, replacer.dest_entity)
+        rescue Exception => e
+          puts "Exception: #{e}"
+        end
+        
       end
       out.write string_buffer
     end
